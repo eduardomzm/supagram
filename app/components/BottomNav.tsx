@@ -34,21 +34,6 @@ function RankIcon({ active }: { active: boolean }) {
   );
 }
 
-function UserIcon({ active }: { active: boolean }) {
-  if (active) {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
-      </svg>
-    );
-  }
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-    </svg>
-  );
-}
-
 function PlusIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
@@ -69,22 +54,12 @@ export default function BottomNav() {
       <div className="max-w-lg mx-auto flex items-center justify-around py-2">
         <Link
           href="/"
-          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
+          className={`flex flex-col items-center gap-1 px-4 py-1 transition-all ${
             pathname === "/" ? "text-primary scale-105 font-bold" : "text-foreground/60 hover:text-primary"
           }`}
         >
           <HomeIcon active={pathname === "/"} />
           <span className="text-[11px]">Inicio</span>
-        </Link>
-
-        <Link
-          href="/rank"
-          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
-            pathname === "/rank" ? "text-accent scale-105 font-bold" : "text-foreground/60 hover:text-accent"
-          }`}
-        >
-          <RankIcon active={pathname === "/rank"} />
-          <span className="text-[11px]">Ranking</span>
         </Link>
 
         <Link
@@ -96,13 +71,13 @@ export default function BottomNav() {
         </Link>
 
         <Link
-          href="/profile"
-          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
-            pathname.startsWith("/profile") ? "text-primary scale-105 font-bold" : "text-foreground/60 hover:text-primary"
+          href="/rank"
+          className={`flex flex-col items-center gap-1 px-4 py-2 transition-all ${
+            pathname === "/rank" ? "text-accent scale-105 font-bold" : "text-foreground/60 hover:text-accent"
           }`}
         >
-          <UserIcon active={pathname.startsWith("/profile")} />
-          <span className="text-[11px]">Perfil</span>
+          <RankIcon active={pathname === "/rank"} />
+          <span className="text-[11px]">Ranking</span>
         </Link>
       </div>
     </nav>

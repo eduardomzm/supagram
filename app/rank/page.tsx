@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { getTimeAgo } from "../utils/time";
 
 import type { Post } from "../mocks/posts";
 import { supabase } from "../lib/supabase";
@@ -46,11 +45,11 @@ export default function RankPage() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card-bg/95 backdrop-blur-md border-b-2 border-primary">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-black bg-gradient-to-r from-amber-400 via-red-500 to-primary bg-clip-text text-transparent flex items-center gap-2">
-            <span>🏆</span> Ranking de Publicaciones
+          <h1 className="text-xl font-black bg-gradient-to-r from-amber-400 via-red-500 to-primary bg-clip-text text-transparent">
+            Ranking de Publicaciones
           </h1>
           <span className="text-xs font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-            Top Fotos ⭐
+            Top Fotos
           </span>
         </div>
       </header>
@@ -59,12 +58,11 @@ export default function RankPage() {
       <main className="max-w-2xl mx-auto p-3">
         {posts.length === 0 ? (
           <div className="text-center py-12 bg-card-bg rounded-2xl border border-border p-6 shadow-sm">
-            <span className="text-4xl">🏆</span>
-            <p className="text-foreground font-bold mt-2">Cargando las mejores publicaciones...</p>
+            <p className="text-foreground font-bold">Cargando las mejores publicaciones...</p>
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-            {[...posts].sort((a, b) => b.likes - a.likes).map((post, idx) => (
+            {[...posts].sort((a, b) => b.likes - a.likes).map((post) => (
               <button
                 key={post.id}
                 onClick={() => setSelectedPost(post)}
@@ -76,23 +74,6 @@ export default function RankPage() {
                   fill
                   className="object-cover transition-transform group-hover:scale-110"
                 />
-                
-                {/* Crown / Trophy badge for Top 3 */}
-                {idx === 0 && (
-                  <span className="absolute top-1.5 left-1.5 z-10 bg-amber-500 text-black text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-md">
-                    🥇 #1
-                  </span>
-                )}
-                {idx === 1 && (
-                  <span className="absolute top-1.5 left-1.5 z-10 bg-slate-300 text-black text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-md">
-                    🥈 #2
-                  </span>
-                )}
-                {idx === 2 && (
-                  <span className="absolute top-1.5 left-1.5 z-10 bg-amber-700 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-md">
-                    🥉 #3
-                  </span>
-                )}
 
                 {/* Overlay con likes al hover */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1 p-2">

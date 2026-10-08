@@ -192,9 +192,9 @@ export default function CreatePage() {
               id="caption"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="Escribe una descripción para tu foto..."
+              placeholder=""
               rows={3}
-              className="w-full px-4 py-3 rounded-2xl bg-card-bg border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none text-sm font-medium"
+              className="w-full px-4 py-3 rounded-2xl bg-card-bg border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none text-sm font-medium"
             />
           </div>
 

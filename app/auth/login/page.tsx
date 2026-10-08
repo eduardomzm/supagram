@@ -157,9 +157,9 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@ejemplo.com"
+                  placeholder=""
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
               </div>
             </div>
@@ -180,9 +180,9 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder=""
                   required
-                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
                 <button
                   type="button"

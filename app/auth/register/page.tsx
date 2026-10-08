@@ -267,11 +267,11 @@ export default function RegisterPage() {
                   type="text"
                   value={username}
                   onChange={handleUsernameChange}
-                  placeholder="ej. usuario_123"
+                  placeholder=""
                   required
                   minLength={3}
                   maxLength={20}
-                  className={`w-full pl-11 pr-4 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
+                  className={`w-full pl-11 pr-4 py-3 rounded-2xl bg-background border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
                     usernameError ? "border-red-500/80 focus:border-red-500" : "border-border focus:border-primary"
                   }`}
                 />
@@ -295,9 +295,9 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@ejemplo.com"
+                  placeholder=""
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
               </div>
             </div>
@@ -316,10 +316,10 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 6 caracteres"
+                  placeholder=""
                   required
                   minLength={6}
-                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
                 <button
                   type="button"
@@ -346,10 +346,10 @@ export default function RegisterPage() {
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirma tu contraseña"
+                  placeholder=""
                   required
                   minLength={6}
-                  className={`w-full pl-11 pr-11 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
+                  className={`w-full pl-11 pr-11 py-3 rounded-2xl bg-background border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
                     passwordsDontMatch
                       ? "border-red-500/80 focus:border-red-500"
                       : passwordsMatch
