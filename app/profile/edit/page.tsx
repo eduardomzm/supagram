@@ -55,7 +55,7 @@ export default function EditProfilePage() {
       .single();
 
     if (error && error.code === "PGRST116") {
-      return true; // No existe, está disponible
+      return true;
     }
     return !data;
   };
@@ -73,7 +73,6 @@ export default function EditProfilePage() {
           return;
         }
 
-        // Buscar perfil existente
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("*")
@@ -128,7 +127,6 @@ export default function EditProfilePage() {
     setIsSaving(true);
     setMessage(null);
 
-    // Validar username
     const usernameValidation = validateUsername(username);
     if (usernameValidation) {
       setMessage({ type: "error", text: usernameValidation });
@@ -136,7 +134,6 @@ export default function EditProfilePage() {
       return;
     }
 
-    // Verificar unicidad si cambió el username
     if (username !== originalUsername) {
       const isAvailable = await checkUsernameAvailable(username, profile.id);
       if (!isAvailable) {
@@ -149,7 +146,6 @@ export default function EditProfilePage() {
     try {
       let avatarUrl = profile.avatar_url;
 
-      // Subir avatar si hay uno nuevo
       if (avatarFile) {
         const fileExt = avatarFile.name.split(".").pop();
         const fileName = `${profile.id}-${Date.now()}.${fileExt}`;
@@ -171,7 +167,6 @@ export default function EditProfilePage() {
         avatarUrl = urlData.publicUrl;
       }
 
-      // Upsert en profiles (insert o update)
       const { error: upsertError } = await supabase
         .from("profiles")
         .upsert({
@@ -182,7 +177,6 @@ export default function EditProfilePage() {
 
       if (upsertError) throw upsertError;
 
-      // Actualizar metadata del usuario
       await supabase.auth.updateUser({
         data: { username },
       });
@@ -194,7 +188,7 @@ export default function EditProfilePage() {
     } catch (err) {
       setMessage({
         type: "error",
-        text: err instanceof Error ? err.message : "Error al guardar",
+        text: err instanceof Error ? err.message : "Error al guardar perfil",
       });
     } finally {
       setIsSaving(false);
@@ -204,7 +198,7 @@ export default function EditProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground/60">Cargando...</div>
+        <div className="text-foreground/60 font-semibold">Cargando perfil...</div>
       </div>
     );
   }
@@ -212,29 +206,29 @@ export default function EditProfilePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
+      <header className="sticky top-0 z-40 bg-card-bg/95 backdrop-blur-md border-b-2 border-primary">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/profile" className="text-foreground/60 hover:text-foreground">
+          <Link href="/profile" className="text-sm text-foreground/60 hover:text-foreground font-semibold">
             Cancelar
           </Link>
-          <h1 className="text-xl font-bold text-foreground">Editar perfil</h1>
+          <h1 className="text-lg font-black text-foreground">Editar perfil</h1>
           <button
             type="submit"
             form="edit-form"
             disabled={isSaving}
-            className="text-primary font-semibold disabled:opacity-50"
+            className="text-sm text-primary font-extrabold hover:text-red-600 disabled:opacity-50"
           >
-            {isSaving ? "..." : "Guardar"}
+            {isSaving ? "Guardando..." : "Guardar"}
           </button>
         </div>
       </header>
 
       {/* Formulario */}
       <main className="max-w-lg mx-auto px-4 py-8">
-        <form id="edit-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form id="edit-form" onSubmit={handleSubmit} className="flex flex-col gap-6 bg-card-bg p-6 rounded-3xl border border-primary/30 shadow-xl">
           {/* Avatar */}
           <div className="flex flex-col items-center gap-4">
-            <div className="relative w-28 h-28 rounded-full overflow-hidden ring-4 ring-primary bg-card-bg">
+            <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary bg-chivas-navy/20 shadow-md">
               {avatarPreview ? (
                 <Image
                   src={avatarPreview}
@@ -243,7 +237,7 @@ export default function EditProfilePage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl text-foreground/40">
+                <div className="w-full h-full flex items-center justify-center text-4xl text-primary font-black">
                   {username?.charAt(0).toUpperCase() || "?"}
                 </div>
               )}
@@ -251,9 +245,9 @@ export default function EditProfilePage() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-primary text-sm font-semibold hover:underline"
+              className="text-primary text-sm font-bold hover:underline"
             >
-              Cambiar foto
+              Cambiar foto de perfil
             </button>
             <input
               ref={fileInputRef}
@@ -266,7 +260,9 @@ export default function EditProfilePage() {
 
           {/* Username */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm text-foreground/60">Nombre de usuario</label>
+            <label className="text-xs font-bold uppercase text-primary tracking-wider px-1">
+              Nombre de usuario
+            </label>
             <input
               type="text"
               value={username}
@@ -275,22 +271,19 @@ export default function EditProfilePage() {
               required
               minLength={3}
               maxLength={20}
-              className={`w-full px-4 py-3 rounded-xl bg-card-bg border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+              className={`w-full px-4 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary font-medium text-sm ${
                 usernameError ? "border-red-500" : "border-border"
               }`}
             />
             {usernameError && (
-              <span className="text-red-500 text-xs">{usernameError}</span>
+              <span className="text-red-500 text-xs px-1 font-semibold">{usernameError}</span>
             )}
-            <span className="text-xs text-foreground/40">
-              Solo letras, números y guión bajo. Sin espacios.
-            </span>
           </div>
 
           {/* Mensaje de estado */}
           {message && (
             <div
-              className={`px-4 py-3 rounded-xl text-sm ${
+              className={`px-4 py-3 rounded-2xl text-xs font-bold ${
                 message.type === "success"
                   ? "bg-green-500/10 text-green-500 border border-green-500/20"
                   : "bg-red-500/10 text-red-500 border border-red-500/20"

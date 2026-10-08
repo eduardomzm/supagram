@@ -33,15 +33,14 @@ export default function CreatePage() {
   };
 
   const uploadAndCreatePost = async (file: File) => {
-    const userId = "11111111-1111-1111-1111-111111111111";
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id || "11111111-1111-1111-1111-111111111111";
 
-    // 1️⃣ Preparar nombre del archivo
     const fileExt = file.name.split(".").pop();
-    const fileName = `${file.name}-${Date.now()}.${fileExt}`;
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `images/${fileName}`;
 
-    // 2️⃣ Subir al bucket "images"
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("supagram")
       .upload(filePath, file, {
         cacheControl: "3600",
@@ -53,16 +52,12 @@ export default function CreatePage() {
       throw uploadError;
     }
 
-    // 3️⃣ Obtener URL pública
     const { data: urlData } = supabase.storage
       .from("supagram")
       .getPublicUrl(filePath);
 
     const publicUrl = urlData.publicUrl;
 
-    console.log("📸 Imagen subida:", publicUrl);
-
-    // 4️⃣ Crear el post en la tabla posts_new
     const { data: postData, error: postError } = await supabase
       .from("posts")
       .insert({
@@ -78,8 +73,6 @@ export default function CreatePage() {
       throw postError;
     }
 
-    console.log("🆕 Post creado:", postData);
-
     return {
       uploadedImageUrl: publicUrl,
       newPost: postData,
@@ -90,7 +83,7 @@ export default function CreatePage() {
     e.preventDefault();
 
     if (!imageFile) {
-      setMessage({ type: "error", text: "Por favor selecciona una imagen" });
+      setMessage({ type: "error", text: "Por favor selecciona una foto" });
       return;
     }
 
@@ -100,8 +93,7 @@ export default function CreatePage() {
     try {
       await uploadAndCreatePost(imageFile);
 
-      // Éxito
-      setMessage({ type: "success", text: "¡Post creado exitosamente!" });
+      setMessage({ type: "success", text: "¡Publicación creada exitosamente!" });
       setImageFile(null);
       setImagePreview(null);
       setCaption("");
@@ -111,20 +103,20 @@ export default function CreatePage() {
     } catch (error) {
       setMessage({
         type: "error",
-        text: error instanceof Error ? error.message : "Error al crear el post",
+        text: error instanceof Error ? error.message : "Error al crear la publicación",
       });
     } finally {
       setIsLoading(false);
     }
   };
-//
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
-        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-center">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Crear Post
+      <header className="sticky top-0 z-40 bg-card-bg/95 backdrop-blur-md border-b-2 border-primary">
+        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+          <h1 className="text-xl font-black bg-gradient-to-r from-primary via-red-500 to-amber-400 bg-clip-text text-transparent">
+            Crear publicación
           </h1>
         </div>
       </header>
@@ -135,7 +127,7 @@ export default function CreatePage() {
           {/* Área de carga de imagen */}
           <div className="flex flex-col gap-2">
             {imagePreview ? (
-              <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-card-bg border border-border">
+              <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-card-bg border-2 border-primary/40 shadow-lg">
                 <Image
                   src={imagePreview}
                   alt="Preview"
@@ -145,14 +137,14 @@ export default function CreatePage() {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                  className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-red-700 transition-colors shadow-md"
                   aria-label="Eliminar imagen"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     stroke="currentColor"
                     className="w-5 h-5"
                   >
@@ -167,31 +159,16 @@ export default function CreatePage() {
             ) : (
               <label
                 htmlFor="image-upload"
-                className="flex flex-col items-center justify-center gap-3 aspect-square w-full rounded-xl border-2 border-dashed border-border bg-card-bg cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                className="flex flex-col items-center justify-center gap-3 aspect-square w-full rounded-2xl border-2 border-dashed border-primary/40 bg-card-bg cursor-pointer hover:border-primary hover:bg-primary/5 transition-all shadow-sm group"
               >
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-primary"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-                    />
-                  </svg>
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <span className="text-4xl">📸</span>
                 </div>
-                <span className="text-foreground/60 text-sm">
-                  Haz clic para seleccionar una imagen
+                <span className="text-foreground font-bold text-sm">
+                  Haz clic para seleccionar una foto
+                </span>
+                <span className="text-foreground/50 text-xs">
+                  Formatos JPG, PNG, WEBP permitidos
                 </span>
               </label>
             )}
@@ -208,20 +185,23 @@ export default function CreatePage() {
 
           {/* Caption */}
           <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-primary tracking-wider px-1">
+              Descripción
+            </label>
             <textarea
               id="caption"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="Escribe algo sobre tu foto..."
+              placeholder="Escribe una descripción para tu foto..."
               rows={3}
-              className="w-full px-4 py-3 rounded-xl bg-card-bg border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-4 py-3 rounded-2xl bg-card-bg border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none text-sm font-medium"
             />
           </div>
 
           {/* Mensaje de estado */}
           {message && (
             <div
-              className={`px-4 py-3 rounded-xl text-sm ${
+              className={`p-3.5 rounded-2xl text-xs font-bold flex items-center gap-2 ${
                 message.type === "success"
                   ? "bg-green-500/10 text-green-500 border border-green-500/20"
                   : "bg-red-500/10 text-red-500 border border-red-500/20"
@@ -235,7 +215,7 @@ export default function CreatePage() {
           <button
             type="submit"
             disabled={isLoading || !imageFile}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary via-red-600 to-amber-500 text-white font-extrabold shadow-lg shadow-primary/30 hover:opacity-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm border border-amber-400/30"
           >
             {isLoading ? (
               <>

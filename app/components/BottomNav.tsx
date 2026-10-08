@@ -23,20 +23,35 @@ function RankIcon({ active }: { active: boolean }) {
   if (active) {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-        <path fillRule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm2.25-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0113.5 9zm3.75-1.5a.75.75 0 00-1.5 0v9a.75.75 0 001.5 0v-9z" clipRule="evenodd" />
+        <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
       </svg>
     );
   }
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385c.116.488-.415.871-.84.62l-4.757-2.617a.562.562 0 0 0-.54 0l-4.757 2.617c-.425.251-.956-.132-.84-.62l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602c-.38-.325-.178-.948.32-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5z" />
+    </svg>
+  );
+}
+
+function UserIcon({ active }: { active: boolean }) {
+  if (active) {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+      </svg>
+    );
+  }
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
     </svg>
   );
 }
 
 function PlusIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
   );
@@ -50,33 +65,44 @@ export default function BottomNav() {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card-bg border-t border-border">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card-bg/95 backdrop-blur-md border-t-2 border-primary/30 shadow-2xl">
       <div className="max-w-lg mx-auto flex items-center justify-around py-2">
         <Link
           href="/"
-          className={`flex flex-col items-center gap-1 px-4 py-2 transition-colors ${
-            pathname === "/" ? "text-primary" : "text-foreground/60 hover:text-foreground"
+          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
+            pathname === "/" ? "text-primary scale-105 font-bold" : "text-foreground/60 hover:text-primary"
           }`}
         >
           <HomeIcon active={pathname === "/"} />
-          <span className="text-xs font-medium">Home</span>
+          <span className="text-[11px]">Inicio</span>
+        </Link>
+
+        <Link
+          href="/rank"
+          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
+            pathname === "/rank" ? "text-accent scale-105 font-bold" : "text-foreground/60 hover:text-accent"
+          }`}
+        >
+          <RankIcon active={pathname === "/rank"} />
+          <span className="text-[11px]">Ranking</span>
         </Link>
 
         <Link
           href="/post"
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:scale-105 transition-transform"
+          className="flex items-center justify-center w-11 h-11 rounded-full bg-gradient-to-r from-primary via-red-600 to-amber-500 text-white shadow-lg shadow-primary/40 hover:scale-110 active:scale-95 transition-all ring-2 ring-accent/50"
+          aria-label="Crear publicación"
         >
           <PlusIcon />
         </Link>
 
         <Link
-          href="/rank"
-          className={`flex flex-col items-center gap-1 px-4 py-2 transition-colors ${
-            pathname === "/rank" ? "text-primary" : "text-foreground/60 hover:text-foreground"
+          href="/profile"
+          className={`flex flex-col items-center gap-1 px-3 py-1 transition-all ${
+            pathname.startsWith("/profile") ? "text-primary scale-105 font-bold" : "text-foreground/60 hover:text-primary"
           }`}
         >
-          <RankIcon active={pathname === "/rank"} />
-          <span className="text-xs font-medium">Rank</span>
+          <UserIcon active={pathname.startsWith("/profile")} />
+          <span className="text-[11px]">Perfil</span>
         </Link>
       </div>
     </nav>

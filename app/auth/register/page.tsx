@@ -120,7 +120,6 @@ export default function RegisterPage() {
         .maybeSingle();
 
       if (error) {
-        // Fallback check on 'users' table if profiles doesn't exist
         const { data: userData } = await supabase
           .from("users")
           .select("username")
@@ -139,7 +138,6 @@ export default function RegisterPage() {
     setIsLoading(true);
     setMessage(null);
 
-    // Validar nombre de usuario
     const uValidation = validateUsername(username);
     if (uValidation) {
       setMessage({ type: "error", text: uValidation });
@@ -147,7 +145,6 @@ export default function RegisterPage() {
       return;
     }
 
-    // Validar contraseñas
     if (password !== confirmPassword) {
       setMessage({ type: "error", text: "Las contraseñas no coinciden" });
       setIsLoading(false);
@@ -160,7 +157,6 @@ export default function RegisterPage() {
       return;
     }
 
-    // Verificar disponibilidad de usuario
     const isAvailable = await checkUsernameAvailable(username);
     if (!isAvailable) {
       setMessage({ type: "error", text: "Este nombre de usuario ya está registrado" });
@@ -182,7 +178,6 @@ export default function RegisterPage() {
 
       if (error) throw error;
 
-      // Intentar upsert de perfil si la sesión de usuario está lista
       if (data.user) {
         try {
           await supabase.from("profiles").upsert({
@@ -192,13 +187,13 @@ export default function RegisterPage() {
             updated_at: new Date().toISOString(),
           });
         } catch {
-          // Ignorar error de tabla si el trigger de Supabase se encarga automáticamente
+          // Trigger fallback
         }
       }
 
       setMessage({
         type: "success",
-        text: "¡Registro exitoso! Revisa tu correo o inicia sesión con tu cuenta.",
+        text: "¡Registro exitoso! Revisa tu correo o inicia sesión.",
       });
 
       setUsername("");
@@ -212,7 +207,7 @@ export default function RegisterPage() {
     } catch (error) {
       setMessage({
         type: "error",
-        text: error instanceof Error ? error.message : "Error al registrar la cuenta",
+        text: error instanceof Error ? error.message : "Error al registrar tu cuenta",
       });
     } finally {
       setIsLoading(false);
@@ -223,35 +218,35 @@ export default function RegisterPage() {
   const passwordsDontMatch = confirmPassword.length > 0 && password !== confirmPassword;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center items-center px-4 py-8 relative overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 -right-20 w-72 h-72 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-background flex flex-col justify-center items-center px-4 py-8 relative overflow-hidden chivas-stripes">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-primary/25 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Header Branding */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-primary-light to-accent bg-clip-text text-transparent drop-shadow-sm">
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-primary via-red-500 to-amber-400 bg-clip-text text-transparent drop-shadow-md">
             Supagram
           </h1>
           <p className="text-foreground/70 text-sm mt-2 font-medium">
-            Únete hoy y comparte tu historia con el mundo
+            Crea tu cuenta gratis
           </p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-card-bg/95 backdrop-blur-md border border-border shadow-2xl rounded-3xl p-6 sm:p-8 transition-all">
+        <div className="bg-card-bg/95 backdrop-blur-md border-2 border-primary/40 shadow-2xl rounded-3xl p-6 sm:p-8 transition-all">
           {/* Segmented Control / Tabs */}
-          <div className="flex bg-background/80 p-1 rounded-2xl border border-border mb-6">
+          <div className="flex bg-background/90 p-1 rounded-2xl border border-border mb-6">
             <Link
               href="/auth/login"
-              className="flex-1 py-2 text-sm font-medium text-foreground/60 hover:text-foreground rounded-xl transition-all text-center"
+              className="flex-1 py-2.5 text-sm font-semibold text-foreground/60 hover:text-foreground rounded-xl transition-all text-center"
             >
               Iniciar sesión
             </Link>
             <button
               type="button"
-              className="flex-1 py-2 text-sm font-semibold rounded-xl bg-card-bg text-foreground shadow-sm transition-all text-center"
+              className="flex-1 py-2.5 text-sm font-extrabold rounded-xl bg-primary text-white shadow-md transition-all text-center"
             >
               Registrarse
             </button>
@@ -260,11 +255,11 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* 1. Nombre de usuario */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="reg-username" className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-1">
+              <label htmlFor="reg-username" className="text-xs font-bold uppercase tracking-wider text-primary px-1">
                 Nombre de usuario
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <UserIcon />
                 </div>
                 <input
@@ -276,23 +271,23 @@ export default function RegisterPage() {
                   required
                   minLength={3}
                   maxLength={20}
-                  className={`w-full pl-11 pr-4 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all text-sm ${
+                  className={`w-full pl-11 pr-4 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
                     usernameError ? "border-red-500/80 focus:border-red-500" : "border-border focus:border-primary"
                   }`}
                 />
               </div>
               {usernameError && (
-                <span className="text-red-500 text-xs px-1 font-medium">{usernameError}</span>
+                <span className="text-red-500 text-xs px-1 font-semibold">{usernameError}</span>
               )}
             </div>
 
             {/* 2. Correo electrónico */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="reg-email" className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-1">
+              <label htmlFor="reg-email" className="text-xs font-bold uppercase tracking-wider text-primary px-1">
                 Correo electrónico
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <MailIcon />
                 </div>
                 <input
@@ -302,18 +297,18 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@ejemplo.com"
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary transition-all text-sm"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
               </div>
             </div>
 
             {/* 3. Contraseña */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="reg-password" className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-1">
+              <label htmlFor="reg-password" className="text-xs font-bold uppercase tracking-wider text-primary px-1">
                 Contraseña
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <LockIcon />
                 </div>
                 <input
@@ -324,7 +319,7 @@ export default function RegisterPage() {
                   placeholder="Mínimo 6 caracteres"
                   required
                   minLength={6}
-                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary transition-all text-sm"
+                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
                 <button
                   type="button"
@@ -339,11 +334,11 @@ export default function RegisterPage() {
 
             {/* 4. Repetir contraseña */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="reg-confirm-password" className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-1">
+              <label htmlFor="reg-confirm-password" className="text-xs font-bold uppercase tracking-wider text-primary px-1">
                 Repetir contraseña
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <LockIcon />
                 </div>
                 <input
@@ -351,10 +346,10 @@ export default function RegisterPage() {
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Repite tu contraseña"
+                  placeholder="Confirma tu contraseña"
                   required
                   minLength={6}
-                  className={`w-full pl-11 pr-11 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all text-sm ${
+                  className={`w-full pl-11 pr-11 py-3 rounded-2xl bg-background border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm font-medium ${
                     passwordsDontMatch
                       ? "border-red-500/80 focus:border-red-500"
                       : passwordsMatch
@@ -374,12 +369,12 @@ export default function RegisterPage() {
 
               {/* Confirm Indicator */}
               {passwordsMatch && (
-                <span className="text-green-500 text-xs px-1 font-medium flex items-center gap-1">
+                <span className="text-green-500 text-xs px-1 font-bold flex items-center gap-1">
                   <CheckCircleIcon className="w-3.5 h-3.5" /> Las contraseñas coinciden
                 </span>
               )}
               {passwordsDontMatch && (
-                <span className="text-red-500 text-xs px-1 font-medium flex items-center gap-1">
+                <span className="text-red-500 text-xs px-1 font-bold flex items-center gap-1">
                   <AlertCircleIcon className="w-3.5 h-3.5" /> Las contraseñas no coinciden
                 </span>
               )}
@@ -388,7 +383,7 @@ export default function RegisterPage() {
             {/* Mensaje de estado */}
             {message && (
               <div
-                className={`p-3.5 rounded-2xl text-xs font-medium flex items-center gap-2.5 transition-all mt-1 ${
+                className={`p-3.5 rounded-2xl text-xs font-semibold flex items-center gap-2.5 transition-all mt-1 ${
                   message.type === "success"
                     ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30"
                     : "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30"
@@ -407,12 +402,12 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-3 w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary to-accent hover:from-primary-light hover:to-accent text-white font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="mt-3 w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary via-red-600 to-amber-500 hover:from-red-600 hover:to-primary text-white font-extrabold shadow-lg shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm border border-amber-400/30"
             >
               {isLoading ? (
                 <>
                   <SpinnerIcon className="w-5 h-5" />
-                  <span>Creando tu cuenta...</span>
+                  <span>Registrando...</span>
                 </>
               ) : (
                 <span>Crear cuenta</span>
@@ -422,11 +417,11 @@ export default function RegisterPage() {
 
           {/* Footer Card Navigation */}
           <div className="mt-6 pt-6 border-t border-border/60 text-center">
-            <p className="text-xs text-foreground/70">
+            <p className="text-xs text-foreground/80 font-medium">
               ¿Ya tienes una cuenta?{" "}
               <Link
                 href="/auth/login"
-                className="font-semibold text-primary hover:text-primary-light underline decoration-2 underline-offset-4 transition-colors"
+                className="font-extrabold text-primary hover:text-red-500 underline decoration-2 underline-offset-4 transition-colors"
               >
                 Inicia sesión
               </Link>

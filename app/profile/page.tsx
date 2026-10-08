@@ -19,7 +19,6 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // Obtener usuario de la sesión
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -30,10 +29,6 @@ export default function ProfilePage() {
           return;
         }
 
-        console.log("👤 Usuario:", user);
-        console.log("📋 Metadata:", user.user_metadata);
-
-        // Buscar perfil en la tabla profiles
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("*")
@@ -47,7 +42,6 @@ export default function ProfilePage() {
         if (profileData) {
           setProfile(profileData);
         } else {
-          // Si no existe perfil, crear uno con datos de metadata
           setProfile({
             id: user.id,
             username: user.user_metadata?.username || "",
@@ -67,7 +61,10 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground/60">Cargando perfil...</div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-primary border-t-accent rounded-full animate-spin"></div>
+          <p className="text-foreground/60 text-sm">Cargando perfil...</p>
+        </div>
       </div>
     );
   }
@@ -75,11 +72,11 @@ export default function ProfilePage() {
   if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center">
-          <p className="text-red-500 mb-4">{error}</p>
+        <div className="text-center bg-card-bg p-6 rounded-2xl border border-border">
+          <p className="text-red-500 mb-4 font-semibold">{error}</p>
           <Link
             href="/auth/login"
-            className="text-primary hover:underline"
+            className="px-4 py-2 rounded-xl bg-primary text-white font-bold hover:bg-red-700 transition-colors inline-block"
           >
             Iniciar sesión
           </Link>
@@ -91,14 +88,14 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
+      <header className="sticky top-0 z-40 bg-card-bg/95 backdrop-blur-md border-b-2 border-primary">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-xl font-black bg-gradient-to-r from-primary via-red-500 to-amber-400 bg-clip-text text-transparent">
             Mi Perfil
           </h1>
           <Link
             href="/profile/edit"
-            className="text-sm text-primary hover:underline"
+            className="text-xs font-bold text-primary hover:text-red-600 px-3 py-1 rounded-lg border border-primary/30 hover:bg-primary/10 transition-colors"
           >
             Editar
           </Link>
@@ -107,9 +104,9 @@ export default function ProfilePage() {
 
       {/* Contenido del perfil */}
       <main className="max-w-lg mx-auto px-4 py-8">
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-6 bg-card-bg p-8 rounded-3xl border border-primary/30 shadow-xl relative overflow-hidden">
           {/* Avatar */}
-          <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary bg-card-bg">
+          <div className="relative w-36 h-36 rounded-full overflow-hidden ring-4 ring-primary shadow-xl bg-chivas-navy/20">
             {profile?.avatar_url ? (
               <Image
                 src={profile.avatar_url}
@@ -118,23 +115,23 @@ export default function ProfilePage() {
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-4xl text-foreground/40">
+              <div className="w-full h-full flex items-center justify-center text-5xl font-black text-primary bg-primary/10">
                 {profile?.username?.charAt(0).toUpperCase() || "?"}
               </div>
             )}
           </div>
 
           {/* Username */}
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-foreground">
-              @{profile?.username || "sin_usuario"}
+          <div className="text-center flex flex-col items-center gap-1">
+            <h2 className="text-2xl font-black text-foreground">
+              @{profile?.username || "usuario"}
             </h2>
           </div>
 
           {/* Botón editar */}
           <Link
             href="/profile/edit"
-            className="px-6 py-2 rounded-xl bg-linear-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity"
+            className="w-full text-center py-3 px-6 rounded-2xl bg-gradient-to-r from-primary via-red-600 to-amber-500 text-white font-extrabold shadow-md hover:opacity-90 transition-opacity uppercase tracking-wider text-xs border border-amber-400/30"
           >
             Editar perfil
           </Link>

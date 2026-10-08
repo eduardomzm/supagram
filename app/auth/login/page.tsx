@@ -108,35 +108,35 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center items-center px-4 py-8 relative overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/4 -left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-72 h-72 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-background flex flex-col justify-center items-center px-4 py-8 relative overflow-hidden chivas-stripes">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-primary/25 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Header Branding */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-primary-light to-accent bg-clip-text text-transparent drop-shadow-sm">
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-primary via-red-500 to-amber-400 bg-clip-text text-transparent drop-shadow-md">
             Supagram
           </h1>
           <p className="text-foreground/70 text-sm mt-2 font-medium">
-            Conéctate con tu comunidad y comparte tus momentos
+            Inicia sesión en tu cuenta
           </p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-card-bg/95 backdrop-blur-md border border-border shadow-2xl rounded-3xl p-6 sm:p-8 transition-all">
+        <div className="bg-card-bg/95 backdrop-blur-md border-2 border-primary/40 shadow-2xl rounded-3xl p-6 sm:p-8 transition-all">
           {/* Segmented Control / Tabs */}
-          <div className="flex bg-background/80 p-1 rounded-2xl border border-border mb-6">
+          <div className="flex bg-background/90 p-1 rounded-2xl border border-border mb-6">
             <button
               type="button"
-              className="flex-1 py-2 text-sm font-semibold rounded-xl bg-card-bg text-foreground shadow-sm transition-all text-center"
+              className="flex-1 py-2.5 text-sm font-extrabold rounded-xl bg-primary text-white shadow-md transition-all text-center"
             >
               Iniciar sesión
             </button>
             <Link
               href="/auth/register"
-              className="flex-1 py-2 text-sm font-medium text-foreground/60 hover:text-foreground rounded-xl transition-all text-center"
+              className="flex-1 py-2.5 text-sm font-semibold text-foreground/60 hover:text-foreground rounded-xl transition-all text-center"
             >
               Registrarse
             </Link>
@@ -145,11 +145,11 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {/* Campo Correo */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="login-email" className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-1">
+              <label htmlFor="login-email" className="text-xs font-bold uppercase tracking-wider text-primary px-1">
                 Correo electrónico
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <MailIcon />
                 </div>
                 <input
@@ -159,7 +159,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@ejemplo.com"
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary transition-all text-sm"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
               </div>
             </div>
@@ -167,12 +167,12 @@ export default function LoginPage() {
             {/* Campo Contraseña */}
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between px-1">
-                <label htmlFor="login-password" className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
+                <label htmlFor="login-password" className="text-xs font-bold uppercase tracking-wider text-primary">
                   Contraseña
                 </label>
               </div>
               <div className="relative flex items-center">
-                <div className="absolute left-3.5 text-foreground/40 pointer-events-none">
+                <div className="absolute left-3.5 text-primary/60 pointer-events-none">
                   <LockIcon />
                 </div>
                 <input
@@ -182,7 +182,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary transition-all text-sm"
+                  className="w-full pl-11 pr-11 py-3 rounded-2xl bg-background border border-border text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
                 />
                 <button
                   type="button"
@@ -198,7 +198,7 @@ export default function LoginPage() {
             {/* Mensaje de estado */}
             {message && (
               <div
-                className={`p-3.5 rounded-2xl text-xs font-medium flex items-center gap-2.5 transition-all ${
+                className={`p-3.5 rounded-2xl text-xs font-semibold flex items-center gap-2.5 transition-all ${
                   message.type === "success"
                     ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30"
                     : "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30"
@@ -217,7 +217,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-2 w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary to-accent hover:from-primary-light hover:to-accent text-white font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="mt-2 w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-primary via-red-600 to-amber-500 hover:from-red-600 hover:to-primary text-white font-extrabold shadow-lg shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm border border-amber-400/30"
             >
               {isLoading ? (
                 <>
@@ -232,11 +232,11 @@ export default function LoginPage() {
 
           {/* Footer Card Navigation */}
           <div className="mt-6 pt-6 border-t border-border/60 text-center">
-            <p className="text-xs text-foreground/70">
+            <p className="text-xs text-foreground/80 font-medium">
               ¿No tienes una cuenta?{" "}
               <Link
                 href="/auth/register"
-                className="font-semibold text-primary hover:text-primary-light underline decoration-2 underline-offset-4 transition-colors"
+                className="font-extrabold text-primary hover:text-red-500 underline decoration-2 underline-offset-4 transition-colors"
               >
                 Regístrate gratis
               </Link>
