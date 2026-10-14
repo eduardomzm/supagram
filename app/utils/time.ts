@@ -1,9 +1,7 @@
-export function getTimeAgo(date: Date | string): string {
-  const timestamp = date instanceof Date ? date.getTime() : new Date(date).getTime();
-  if (!Number.isFinite(timestamp)) return "Fecha no disponible";
+export function getTimeAgo(date: Date): string {
   const now = new Date();
-  const seconds = Math.floor((now.getTime() - timestamp) / 1000);
-  
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
   if (seconds < 60) return "hace unos segundos";
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `hace ${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
