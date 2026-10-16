@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-import { supabase } from "../lib/client";
+
 import { HeartIcon } from "../components/HeartIcon";
 import Modal from "../components/Modal";
 import { Post } from "../types";
+import { supabase } from "../lib/supabase";
 
 export default function RankPage() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -16,7 +17,7 @@ export default function RankPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       // 1. Obtener posts
-      const { data: postsData, error: postsError } = await supabase
+      const { data: postsData, error: postsError } = await supabase 
         .from("posts")
         .select("id, image_url, caption, user_id, created_at");
 
