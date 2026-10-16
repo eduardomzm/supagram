@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Post, Comment } from "./types";
-import { supabase } from "./lib/client";
+import { supabase } from "../lib/client";
 import PostCard from "./components/PostCard";
 
 
@@ -61,7 +61,7 @@ export default function Home() {
     }
   };
 
-  // Agregar comentario
+
   const handleComment = async (postId: number | string, body: string) => {
     if (!currentUserId) return;
 
