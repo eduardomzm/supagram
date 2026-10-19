@@ -61,7 +61,7 @@ export default function CreatePage() {
     const fileName = `${file.name}-${Date.now()}.${fileExt}`;
     const filePath = `images/${fileName}`;
 
-    // 2️⃣ Subir al bucket "supagram"
+    // 2️ Subir al bucket "supagram"
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("supagram")
       .upload(filePath, file, {
@@ -74,7 +74,7 @@ export default function CreatePage() {
       throw uploadError;
     }
 
-    // 3️⃣ Obtener URL pública
+    // 3️ Obtener URL pública
     const { data: urlData } = supabase.storage
       .from("supagram")
       .getPublicUrl(filePath);
@@ -83,7 +83,7 @@ export default function CreatePage() {
 
     console.log("📸 Imagen subida:", publicUrl);
 
-    // 4️⃣ Crear el post en la tabla posts
+    // 4️Crear el post en la tabla posts
     const { data: postData, error: postError } = await supabase
       .from("posts")
       .insert({
