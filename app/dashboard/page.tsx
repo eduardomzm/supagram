@@ -27,24 +27,6 @@ export default function DashboardPage() {
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Función para cargar estadísticas
-  const fetchStats = async () => {
-    const [usersRes, postsRes, likesRes, commentsRes] = await Promise.all([
-      supabase.from("profiles").select("id", { count: "exact", head: true }),
-      supabase.from("posts").select("id", { count: "exact", head: true }),
-      supabase.from("likes").select("id", { count: "exact", head: true }),
-      supabase.from("comments").select("id", { count: "exact", head: true }),
-    ]);
-
-    setStats({
-      users: usersRes.count || 0,
-      posts: postsRes.count || 0,
-      likes: likesRes.count || 0,
-      comments: commentsRes.count || 0,
-    });
-    setIsLoading(false);
-  };
-
   // Función para agregar actividad reciente
   const addActivity = (activity: RecentActivity) => {
     setRecentActivity((prev) => [activity, ...prev].slice(0, 10));
@@ -52,6 +34,23 @@ export default function DashboardPage() {
 
   // Cargar estadísticas iniciales
   useEffect(() => {
+    const fetchStats = async () => {
+      const [usersRes, postsRes, likesRes, commentsRes] = await Promise.all([
+        supabase.from("profiles").select("id", { count: "exact", head: true }),
+        supabase.from("posts").select("id", { count: "exact", head: true }),
+        supabase.from("likes").select("id", { count: "exact", head: true }),
+        supabase.from("comments").select("id", { count: "exact", head: true }),
+      ]);
+
+      setStats({
+        users: usersRes.count || 0,
+        posts: postsRes.count || 0,
+        likes: likesRes.count || 0,
+        comments: commentsRes.count || 0,
+      });
+      setIsLoading(false);
+    };
+
     fetchStats();
   }, []);
 

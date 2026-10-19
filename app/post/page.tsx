@@ -62,7 +62,7 @@ export default function CreatePage() {
     const filePath = `images/${fileName}`;
 
     // 2️ Subir al bucket "supagram"
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("supagram")
       .upload(filePath, file, {
         cacheControl: "3600",
